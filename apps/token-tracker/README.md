@@ -11,6 +11,41 @@ A real-time web dashboard for monitoring token usage in Claude Code sessions.
 - **Model Breakdown**: See token usage by model (Opus, Sonnet, Haiku)
 - **Cache Tracking**: Monitor cache creation and read operations
 - **Responsive Design**: Works on desktop and mobile devices
+  
+## Minions Framework Integration
+
+  Active Integration:
+  - server.py and server_simple.py are specifically designed for minions framework monitoring
+  - They expect log files in minions_root/logs/ with minions-specific structure
+  - Track the framework's unique local/remote model architecture:
+    - Local models: On-device processing of long contexts
+    - Remote models: Cloud-based supervision
+    - Rounds: Multiple collaboration cycles between local/remote
+    - Protocols: Different modes (single "minion" vs multiple "minions")
+
+  Expected Log Structure:
+  {
+    "timestamp": "...",
+    "task": "...",
+    "protocol": "minion|minions",
+    "local_model": "ollama/llama3.2",
+    "remote_model": "openai/gpt-4o",
+    "usage": {
+      "remote": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+      "local": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    },
+    "rounds": 3
+  }
+
+  Dual Purpose Design
+
+  The token tracker is built as a monitoring solution for both:
+  1. Claude Code sessions (via claude_code_server.py)
+  2. Minions framework usage (via server.py)
+
+  This reflects the minions framework's cost-efficient architecture where local models handle expensive context
+  processing while cloud models provide high-quality supervision - exactly the kind of usage pattern that benefits
+  from detailed token tracking and cost analysis.
 
 ## Quick Start
 
